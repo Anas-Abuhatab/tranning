@@ -23,7 +23,7 @@ const getFaruitData = async (req, res) => {
 const createFaruitData = async (req, res) => {
     let addData = req.body;
     let newFru = new userModle(addData)
-    newFru.save();
+    await newFru.save();
     await userModle.find().then(data => {
         res.json(data);
     });
@@ -31,7 +31,7 @@ const createFaruitData = async (req, res) => {
 
 const deleteFaruitData = async (req, res) => {
     let deleteiD = req.params.id;
-    userModle.findByIdAndDelete(deleteiD).then(data => {
+    userModle.findByIdAndDelete(deleteiD).then(() => {
         userModle.find().then(data => {
             res.json(data);
         });
@@ -42,11 +42,11 @@ const deleteFaruitData = async (req, res) => {
 const updateFaruitData = async (req, res) => {
     let deleteiD = req.params.id;
     let addData = req.body;
-    userModle.findOne({ _id: deleteiD }).then(data => {
+    await userModle.findOne({ _id: deleteiD }).then(async data => {
         data.strDrink = addData.strDrink;
         data.strDrinkThumb = addData.strDrinkThumb;
         data.idDrink = addData.idDrink;
-        data.save()
+        await data.save()
     });
     await userModle.find().then(data => {
         res.status(200).json(data);
